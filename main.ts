@@ -8,7 +8,6 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 	
 })
 let mainCharacter: Sprite = null
-game.splash("Currently editing")
 let Gravity = 20
 mainCharacter = sprites.create(img`
     3 3 3 . . 3 . 3 . 3 3 3 . 3 3 . 
