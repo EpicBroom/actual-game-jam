@@ -211,7 +211,6 @@ statusbar.setBarBorder(1, 15)
 statusbar.setStatusBarFlag(StatusBarFlag.SmoothTransition, true)
 statusbar.positionDirection(CollisionDirection.Bottom)
 statusbar.setOffsetPadding(-43, 5)
-game.splash("Currently editing")
 forever(function () {
     mainCharacter.setBounceOnWall(true)
 })
