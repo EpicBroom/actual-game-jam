@@ -206,12 +206,14 @@ scene.setBackgroundImage(img`
     dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
     dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
     `)
+tiles.setCurrentTilemap(tilemap`level2`)
+scene.cameraFollowSprite(mainCharacter)
 statusbar.setColor(7, 2, 7)
 statusbar.setBarBorder(1, 15)
 statusbar.setStatusBarFlag(StatusBarFlag.SmoothTransition, true)
 statusbar.positionDirection(CollisionDirection.Bottom)
 statusbar.setOffsetPadding(-43, 5)
-game.splash("Currently editing")
+tiles.placeOnTile(mainCharacter, tiles.getTileLocation(1, 11))
 forever(function () {
     mainCharacter.setBounceOnWall(true)
 })
