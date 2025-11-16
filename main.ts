@@ -22,7 +22,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             `, mainCharacter, -50, 0)
-        pause(300)
+        pause(500)
         bulletCooldownLeft = 0
     }
 })
@@ -47,7 +47,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             `, mainCharacter, 50, 0)
-        pause(300)
+        pause(500)
         bulletCooldownRight = 0
     }
 })
@@ -211,6 +211,7 @@ statusbar.setBarBorder(1, 15)
 statusbar.setStatusBarFlag(StatusBarFlag.SmoothTransition, true)
 statusbar.positionDirection(CollisionDirection.Bottom)
 statusbar.setOffsetPadding(-43, 5)
+game.splash("Currently editing")
 forever(function () {
     mainCharacter.setBounceOnWall(true)
 })
