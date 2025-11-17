@@ -8,7 +8,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (leftpressed == 0) {
         if (bulletCooldown == 0) {
             bulletCooldown += 1
-            if (tilemap2 == 1) {
+            if (world == 1) {
                 portalRay = sprites.createProjectileFromSprite(img`
                     . . . . . . . . . . . . . . . . 
                     . . . . . . . . . . . . . . . . 
@@ -54,7 +54,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     } else if (rightpressed == 0) {
         if (bulletCooldown == 0) {
             bulletCooldown += 1
-            if (tilemap2 == 1) {
+            if (world == 1) {
                 portalRay = sprites.createProjectileFromSprite(img`
                     . . . . . . . . . . . . . . . . 
                     . . . . . . . . . . . . . . . . 
@@ -106,8 +106,8 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
 sprites.onOverlap(SpriteKind.Player, SpriteKind.portal, function (sprite, otherSprite) {
     if (touchingPortal == 0) {
         touchingPortal = 1
-        if (tilemap2 == 1) {
-            tilemap2 = 2
+        if (world == 1) {
+            world = 2
             scene.setBackgroundImage(img`
                 ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
                 ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
@@ -471,7 +471,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.portal, function (sprite, otherS
             }
             tiles.placeOnTile(bluePortal, otherSprite.tilemapLocation())
             sprites.destroy(otherSprite)
-            tilemap2 = 1
+            world = 1
         }
         pauseUntil(() => !(mainCharacter.overlapsWith(orangePortal)) && !(mainCharacter.overlapsWith(bluePortal)))
         touchingPortal = 0
@@ -483,7 +483,7 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 scene.onHitWall(SpriteKind.Projectile, function (sprite2, location) {
     sprites.destroyAllSpritesOfKind(SpriteKind.portal)
-    if (tilemap2 == 1) {
+    if (world == 1) {
         if (portalRay.isHittingTile(CollisionDirection.Left)) {
             bluePortal = sprites.create(img`
                 8 . . . . . . . . . . . . . . . 
@@ -576,10 +576,10 @@ let rightpressed = 0
 let leftpressed = 0
 let mainCharacter: Sprite = null
 let bluePortal: Sprite = null
-let tilemap2 = 0
+let world = 0
 let touchingPortal = 0
 touchingPortal = 0
-tilemap2 = 1
+world = 1
 let Gravity = 20
 bluePortal = sprites.create(img`
     . . . . . . . . . . . . . . . . 
