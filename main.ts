@@ -1,5 +1,8 @@
+controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
+    mainCharacter.vy = -100
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (controller.right.isPressed()) {
+    if (leftpressed == 0) {
         if (bulletCooldown == 0) {
             bulletCooldown += 1
             bulletLeft = sprites.createProjectileFromSprite(img`
@@ -9,9 +12,9 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
-                . . . . . . f f f f . . . . . . 
-                . . . . . . f f f f f . . . . . 
-                . . . . . . f f f f . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . 5 . . . . . . . 
+                . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
@@ -24,7 +27,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 bulletCooldown = 0
             })
         }
-    } else if (controller.left.isPressed()) {
+    } else if (rightpressed == 0) {
         if (bulletCooldown == 0) {
             bulletCooldown += 1
             bulletLeft = sprites.createProjectileFromSprite(img`
@@ -34,9 +37,9 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
-                . . . . . . f f f f . . . . . . 
-                . . . . . f f f f f . . . . . . 
-                . . . . . . f f f f . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . 5 . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
@@ -51,11 +54,20 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         }
     }
 })
+controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
+    leftpressed = 1
+    rightpressed = 0
+})
+controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
+    leftpressed = 0
+    rightpressed = 1
+})
 let bulletLeft: Sprite = null
 let bulletCooldown = 0
+let rightpressed = 0
+let leftpressed = 0
 let mainCharacter: Sprite = null
-game.splash("Currently editing")
-let Gravity = 20
+let Gravity = 2
 mainCharacter = sprites.create(img`
     . . . . f f f f . . . . . 
     . . f f f f f f f f . . . 
@@ -68,11 +80,11 @@ mainCharacter = sprites.create(img`
     . f 4 1 f 4 4 f 1 4 f . . 
     . f e 4 4 4 4 4 4 e f . . 
     . f f f e e e e f f f . . 
-    f e f b 7 7 7 7 b f e f . 
-    e 4 f 7 7 7 7 7 7 f 4 e . 
-    e e f 6 6 6 6 6 6 f e e . 
-    . . . f f f f f f . . . . 
-    . . . f f . . f f . . . . 
+    f e f b 7 7 7 7 b f f f . 
+    e 4 f 7 7 7 7 7 7 f f 1 f 
+    e e f 6 6 6 6 6 6 f f 1 f 
+    . . . f f f f f f . 2 f 8 
+    . . . f f . . f f . f . f 
     `, SpriteKind.Player)
 let statusbar = statusbars.create(60, 10, StatusBarKind.Health)
 scene.setBackgroundImage(img`
@@ -209,4 +221,5 @@ forever(function () {
     mainCharacter.vx = controller.dx(5000)
     info.setScore(bulletCooldown)
     info.player2.setScore(0)
+    mainCharacter.vy += Gravity
 })
