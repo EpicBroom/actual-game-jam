@@ -1,69 +1,60 @@
-controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
-    mainCharacter.vy = -100
-})
-controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (bulletCooldownLeft == 0) {
-        bulletCooldownLeft += 1
-        bulletLeft = sprites.createProjectileFromSprite(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . f f f f . . . . . . 
-            . . . . . f f f f f . . . . . . 
-            . . . . . . f f f f . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, mainCharacter, -50, 0)
-        pause(500)
-        bulletCooldownLeft = 0
-    }
-})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (bulletCooldownRight == 0) {
-        bulletCooldownRight += 1
-        bulletLeft = sprites.createProjectileFromSprite(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . f f f f . . . . . . 
-            . . . . . . f f f f f . . . . . 
-            . . . . . . f f f f . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, mainCharacter, 50, 0)
-        pause(500)
-        bulletCooldownRight = 0
+    if (controller.right.isPressed()) {
+        if (bulletCooldown == 0) {
+            bulletCooldown += 1
+            bulletLeft = sprites.createProjectileFromSprite(img`
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . f f f f . . . . . . 
+                . . . . . . f f f f f . . . . . 
+                . . . . . . f f f f . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                `, mainCharacter, 500, 0)
+            timer.after(500, function () {
+                bulletCooldown = 0
+            })
+        }
+    } else if (controller.left.isPressed()) {
+        if (bulletCooldown == 0) {
+            bulletCooldown += 1
+            bulletLeft = sprites.createProjectileFromSprite(img`
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . f f f f . . . . . . 
+                . . . . . f f f f f . . . . . . 
+                . . . . . . f f f f . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                `, mainCharacter, -500, 0)
+            timer.after(500, function () {
+                bulletCooldown = 0
+            })
+        }
     }
 })
-controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
-    mainCharacter.vx = -100
-})
-controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-    mainCharacter.vx = 100
-})
-controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
-    mainCharacter.vy = 100
-})
-let bulletCooldownRight = 0
 let bulletLeft: Sprite = null
-let bulletCooldownLeft = 0
+let bulletCooldown = 0
 let mainCharacter: Sprite = null
+game.splash("Currently editing")
 let Gravity = 20
 mainCharacter = sprites.create(img`
     . . . . f f f f . . . . . 
@@ -215,5 +206,7 @@ statusbar.positionDirection(CollisionDirection.Bottom)
 statusbar.setOffsetPadding(-43, 5)
 tiles.placeOnTile(mainCharacter, tiles.getTileLocation(1, 11))
 forever(function () {
-    mainCharacter.setBounceOnWall(true)
+    mainCharacter.vx = controller.dx(5000)
+    info.setScore(bulletCooldown)
+    info.player2.setScore(0)
 })
