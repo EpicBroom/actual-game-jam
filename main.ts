@@ -536,6 +536,7 @@ let mainCharacter: Sprite = null
 let bluePortal: Sprite = null
 let tilemap2 = 0
 let touchingPortal = 0
+game.splash("Currently editing")
 touchingPortal = 0
 tilemap2 = 1
 let Gravity = 20
