@@ -67,6 +67,7 @@ let bulletCooldown = 0
 let rightpressed = 0
 let leftpressed = 0
 let mainCharacter: Sprite = null
+game.splash("Currently editing")
 let Gravity = 2
 mainCharacter = sprites.create(img`
     . . . . f f f f . . . . . 
