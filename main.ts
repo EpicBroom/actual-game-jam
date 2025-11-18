@@ -1,9 +1,6 @@
 namespace SpriteKind {
     export const portal = SpriteKind.create()
 }
-controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
-    mainCharacter.vy = -200
-})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile`, function (sprite, location) {
     game.gameOver(true)
 })
@@ -570,6 +567,7 @@ let mainCharacter: Sprite = null
 let bluePortal: Sprite = null
 let world = 0
 let touchingPortal = 0
+let touchingGround = 1
 touchingPortal = 0
 world = 1
 let Gravity = 20
@@ -742,4 +740,12 @@ statusbar.positionDirection(CollisionDirection.Bottom)
 forever(function () {
     mainCharacter.vx = controller.dx(5000)
     mainCharacter.vy += Gravity
+})
+forever(function () {
+    if (touchingGround == 1 && controller.up.isPressed()) {
+        touchingGround = 0
+        mainCharacter.vy = -200
+        pauseUntil(() => mainCharacter.isHittingTile(CollisionDirection.Bottom))
+        touchingGround = 1
+    }
 })
