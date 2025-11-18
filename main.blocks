@@ -16,16 +16,16 @@
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `</field><data>{"commentRefs":[],"fieldData":{"img":null}}</data></shadow></value><value name="kind"><shadow type="spritekind" id="rRsSwosr@KkqN!|if/Yl"><field name="MEMBER">portal</field></shadow></value></block></value><next><block type="variables_set" id="5mpiSJW_3a5nD6iWC(%j"><field name="VAR" id="34b?ey^vr=0IM@+^$?vb">mainCharacter</field><value name="VALUE"><shadow type="math_number" id="E{~6lkQ+UiMN%P~pM$t["><field name="NUM">0</field></shadow><block type="spritescreate" id="}_c91=!rCaPN,qMqGT#4"><value name="img"><shadow type="screen_image_picker" id="E5I4,G-q7M1c9=y4Z`v/"><field name="img">img`
+. . . . . . . . . . . . . 
 . . . . f f f f . . . . . 
-. . f f f f f f f f . . . 
-. f f f f f f c f f f . . 
-f f f f f f c c f f f c . 
-f f f c f f f f f f f c . 
-c c c f f f b b f f c c . 
-f f f f f b b f f c c f . 
-f f f b f b b f b f f f . 
-. . d 1 f d d f 1 d . . . 
-. . b d d d d d d b . . . 
+. . f f f f f c f f . . . 
+. f f f f f c c f f f . . 
+. f f c f b b f f f f . . 
+. c c f f d d b f f c . . 
+. f f f d d d d d c c . . 
+. d f b f d d f b f d . . 
+. . f 1 f d d f 1 f . . . 
+. . f d d d d d d f . . . 
 . . . e e e e e f f f . . 
 . . . d d c f f 1 1 1 f . 
 . . . d b f 1 1 1 1 1 f . 

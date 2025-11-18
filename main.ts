@@ -590,16 +590,16 @@ bluePortal = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     `, SpriteKind.portal)
 mainCharacter = sprites.create(img`
+    . . . . . . . . . . . . . 
     . . . . f f f f . . . . . 
-    . . f f f f f f f f . . . 
-    . f f f f f f c f f f . . 
-    f f f f f f c c f f f c . 
-    f f f c f f f f f f f c . 
-    c c c f f f b b f f c c . 
-    f f f f f b b f f c c f . 
-    f f f b f b b f b f f f . 
-    . . d 1 f d d f 1 d . . . 
-    . . b d d d d d d b . . . 
+    . . f f f f f c f f . . . 
+    . f f f f f c c f f f . . 
+    . f f c f b b f f f f . . 
+    . c c f f d d b f f c . . 
+    . f f f d d d d d c c . . 
+    . d f b f d d f b f d . . 
+    . . f 1 f d d f 1 f . . . 
+    . . f d d d d d d f . . . 
     . . . e e e e e f f f . . 
     . . . d d c f f 1 1 1 f . 
     . . . d b f 1 1 1 1 1 f . 
