@@ -595,17 +595,17 @@ mainCharacter = sprites.create(img`
     . f f f f f f c f f f . . 
     f f f f f f c c f f f c . 
     f f f c f f f f f f f c . 
-    c c c f f f e e f f c c . 
-    f f f f f e e f f c c f . 
-    f f f b f e e f b f f f . 
-    . f 4 1 f 4 4 f 1 4 f . . 
-    . f e 4 4 4 4 4 4 e f . . 
-    . f f f e e e e f f f . . 
-    f e f b 7 7 7 7 b f f f . 
-    e 4 f 7 7 7 7 7 7 f f 1 f 
-    e e f 6 6 6 6 6 6 f f 1 f 
-    . . . f f f f f f . 2 f 8 
-    . . . f f . . f f . f . f 
+    c c c f f f b b f f c c . 
+    f f f f f b b f f c c f . 
+    f f f b f b b f b f f f . 
+    . . d 1 f d d f 1 d . . . 
+    . . b d d d d d d b . . . 
+    . . . e e e e e f f f . . 
+    . . . d d c f f 1 1 1 f . 
+    . . . d b f 1 1 1 1 1 f . 
+    . . . f f 4 1 1 1 f f . . 
+    . . . e e f 8 f f . . . . 
+    . . . e f . f 4 4 . . . . 
     `, SpriteKind.Player)
 let statusbar = statusbars.create(60, 10, StatusBarKind.Health)
 scene.setBackgroundImage(img`
