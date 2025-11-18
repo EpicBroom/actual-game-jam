@@ -483,89 +483,91 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 scene.onHitWall(SpriteKind.Projectile, function (sprite2, location) {
     sprites.destroyAllSpritesOfKind(SpriteKind.portal)
-    if (world == 1) {
-        if (portalRay.isHittingTile(CollisionDirection.Left)) {
-            bluePortal = sprites.create(img`
-                8 . . . . . . . . . . . . . . . 
-                8 . . . . . . . . . . . . . . . 
-                8 . . . . . . . . . . . . . . . 
-                8 . . . . . . . . . . . . . . . 
-                8 . . . . . . . . . . . . . . . 
-                8 . . . . . . . . . . . . . . . 
-                8 . . . . . . . . . . . . . . . 
-                8 . . . . . . . . . . . . . . . 
-                8 . . . . . . . . . . . . . . . 
-                8 . . . . . . . . . . . . . . . 
-                8 . . . . . . . . . . . . . . . 
-                8 . . . . . . . . . . . . . . . 
-                8 . . . . . . . . . . . . . . . 
-                8 . . . . . . . . . . . . . . . 
-                8 . . . . . . . . . . . . . . . 
-                8 . . . . . . . . . . . . . . . 
-                `, SpriteKind.portal)
-            tiles.placeOnTile(bluePortal, tiles.getTileLocation(location.column + 1, location.row))
+    if (!(tiles.tileAtLocationEquals(location, sprites.dungeon.floorLight0))) {
+        if (world == 1) {
+            if (portalRay.isHittingTile(CollisionDirection.Left)) {
+                bluePortal = sprites.create(img`
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    `, SpriteKind.portal)
+                tiles.placeOnTile(bluePortal, tiles.getTileLocation(location.column + 1, location.row))
+            } else {
+                bluePortal = sprites.create(img`
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    `, SpriteKind.portal)
+                tiles.placeOnTile(bluePortal, tiles.getTileLocation(location.column - 1, location.row))
+            }
         } else {
-            bluePortal = sprites.create(img`
-                . . . . . . . . . . . . . . . 8 
-                . . . . . . . . . . . . . . . 8 
-                . . . . . . . . . . . . . . . 8 
-                . . . . . . . . . . . . . . . 8 
-                . . . . . . . . . . . . . . . 8 
-                . . . . . . . . . . . . . . . 8 
-                . . . . . . . . . . . . . . . 8 
-                . . . . . . . . . . . . . . . 8 
-                . . . . . . . . . . . . . . . 8 
-                . . . . . . . . . . . . . . . 8 
-                . . . . . . . . . . . . . . . 8 
-                . . . . . . . . . . . . . . . 8 
-                . . . . . . . . . . . . . . . 8 
-                . . . . . . . . . . . . . . . 8 
-                . . . . . . . . . . . . . . . 8 
-                . . . . . . . . . . . . . . . 8 
-                `, SpriteKind.portal)
-            tiles.placeOnTile(bluePortal, tiles.getTileLocation(location.column - 1, location.row))
-        }
-    } else {
-        if (portalRay.isHittingTile(CollisionDirection.Left)) {
-            bluePortal = sprites.create(img`
-                4 . . . . . . . . . . . . . . . 
-                4 . . . . . . . . . . . . . . . 
-                4 . . . . . . . . . . . . . . . 
-                4 . . . . . . . . . . . . . . . 
-                4 . . . . . . . . . . . . . . . 
-                4 . . . . . . . . . . . . . . . 
-                4 . . . . . . . . . . . . . . . 
-                4 . . . . . . . . . . . . . . . 
-                4 . . . . . . . . . . . . . . . 
-                4 . . . . . . . . . . . . . . . 
-                4 . . . . . . . . . . . . . . . 
-                4 . . . . . . . . . . . . . . . 
-                4 . . . . . . . . . . . . . . . 
-                4 . . . . . . . . . . . . . . . 
-                4 . . . . . . . . . . . . . . . 
-                4 . . . . . . . . . . . . . . . 
-                `, SpriteKind.portal)
-            tiles.placeOnTile(bluePortal, tiles.getTileLocation(location.column + 1, location.row))
-        } else {
-            bluePortal = sprites.create(img`
-                . . . . . . . . . . . . . . . 4 
-                . . . . . . . . . . . . . . . 4 
-                . . . . . . . . . . . . . . . 4 
-                . . . . . . . . . . . . . . . 4 
-                . . . . . . . . . . . . . . . 4 
-                . . . . . . . . . . . . . . . 4 
-                . . . . . . . . . . . . . . . 4 
-                . . . . . . . . . . . . . . . 4 
-                . . . . . . . . . . . . . . . 4 
-                . . . . . . . . . . . . . . . 4 
-                . . . . . . . . . . . . . . . 4 
-                . . . . . . . . . . . . . . . 4 
-                . . . . . . . . . . . . . . . 4 
-                . . . . . . . . . . . . . . . 4 
-                . . . . . . . . . . . . . . . 4 
-                . . . . . . . . . . . . . . . 4 
-                `, SpriteKind.portal)
-            tiles.placeOnTile(bluePortal, tiles.getTileLocation(location.column - 1, location.row))
+            if (portalRay.isHittingTile(CollisionDirection.Left)) {
+                bluePortal = sprites.create(img`
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    `, SpriteKind.portal)
+                tiles.placeOnTile(bluePortal, tiles.getTileLocation(location.column + 1, location.row))
+            } else {
+                bluePortal = sprites.create(img`
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    `, SpriteKind.portal)
+                tiles.placeOnTile(bluePortal, tiles.getTileLocation(location.column - 1, location.row))
+            }
         }
     }
 })
