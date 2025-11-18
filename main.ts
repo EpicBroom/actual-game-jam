@@ -412,7 +412,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.portal, function (sprite, otherS
                 dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
                 dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
                 `)
-            tiles.setCurrentTilemap(tilemap`level0`)
+            tiles.setCurrentTilemap(tilemap`level1`)
             if (otherSprite.image.equals(img`
                 . . . . . . . . . . . . . . . 4 
                 . . . . . . . . . . . . . . . 4 
@@ -741,9 +741,10 @@ scene.setBackgroundImage(img`
     dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
     dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
     `)
-tiles.setCurrentTilemap(tilemap`level0`)
+tiles.setCurrentTilemap(tilemap`level1`)
 scene.cameraFollowSprite(mainCharacter)
 statusbar.setColor(7, 2, 7)
+statusbar.setOffsetPadding(-43, 5)
 statusbar.setBarBorder(1, 15)
 statusbar.positionDirection(CollisionDirection.Bottom)
 forever(function () {
