@@ -143,53 +143,6 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
-            . . . . . . . . 8 . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, mainCharacter, 500, 0)
-    } else {
-        portalRay = sprites.createProjectileFromSprite(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . 4 . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, mainCharacter, 500, 0)
-    }
-})
-scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile`, function (sprite, location) {
-    levelTransition = 1
-    level += 1
-    load_world()
-    levelTransition = 0
-})
-controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (world == 1) {
-        portalRay = sprites.createProjectileFromSprite(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
             . . . . . . . 8 . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
@@ -219,6 +172,53 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             `, mainCharacter, -500, 0)
+    }
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile`, function (sprite, location) {
+    levelTransition = 1
+    level += 1
+    load_world()
+    levelTransition = 0
+})
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (world == 1) {
+        portalRay = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . 8 . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, mainCharacter, 500, 0)
+    } else {
+        portalRay = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . 4 . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, mainCharacter, 500, 0)
     }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.portal, function (sprite, otherSprite) {
@@ -612,14 +612,6 @@ forever(function () {
     mainCharacter.vy += Gravity
 })
 forever(function () {
-    if (touchingGround == 1 && controller.up.isPressed()) {
-        touchingGround = 0
-        mainCharacter.vy = -200
-        pauseUntil(() => mainCharacter.isHittingTile(CollisionDirection.Bottom))
-        touchingGround = 1
-    }
-})
-forever(function () {
     if (mainCharacter.tileKindAt(TileDirection.Center, assets.tile`myTile3`) || mainCharacter.tileKindAt(TileDirection.Bottom, assets.tile`myTile3`)) {
         statusbar.value += -75
         pause(500)
@@ -627,5 +619,13 @@ forever(function () {
         if (!(statusbar.value == statusbar.max)) {
             statusbar.value += 10
         }
+    }
+})
+forever(function () {
+    if (touchingGround == 1 && controller.up.isPressed()) {
+        touchingGround = 0
+        mainCharacter.vy = -200
+        pauseUntil(() => mainCharacter.isHittingTile(CollisionDirection.Bottom))
+        touchingGround = 1
     }
 })
