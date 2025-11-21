@@ -608,18 +608,14 @@ statusbar.setOffsetPadding(-43, 5)
 statusbar.setBarBorder(1, 15)
 statusbar.positionDirection(CollisionDirection.Bottom)
 forever(function () {
-    mainCharacter.vx = controller.dx(5000)
-    mainCharacter.vy += Gravity
+    if (mainCharacter.tileKindAt(TileDirection.Center, assets.tile`myTile3`) || mainCharacter.tileKindAt(TileDirection.Bottom, assets.tile`myTile3`)) {
+        statusbar.value += -100
+        pause(500)
+    }
 })
 forever(function () {
-    if (mainCharacter.tileKindAt(TileDirection.Center, assets.tile`myTile3`) || mainCharacter.tileKindAt(TileDirection.Bottom, assets.tile`myTile3`)) {
-        statusbar.value += -75
-        pause(500)
-    } else {
-        if (!(statusbar.value == statusbar.max)) {
-            statusbar.value += 10
-        }
-    }
+    mainCharacter.vx = controller.dx(5000)
+    mainCharacter.vy += Gravity
 })
 forever(function () {
     if (touchingGround == 1 && controller.up.isPressed()) {
