@@ -6,7 +6,9 @@
         "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.2",
         "Timers": "github:microsoft/arcade-timers#v1.1.0",
         "arcade-sprite-data": "github:microsoft/arcade-sprite-data#v0.2.1",
-        "sprite-scaling": "*"
+        "sprite-scaling": "*",
+        "pxt-zoom": "github:kiwiphoenix364/pxt-zoom#v3.0.3",
+        "small-tilemaps": "github:riknoll/small-tilemaps#v0.0.2"
     },
     "files": [
         "main.blocks",

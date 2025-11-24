@@ -300,6 +300,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile`, function (sprite, location) {
     if (key == 1) {
         levelTransition = 1
+        key = 0
         level += 1
         load_world()
         levelTransition = 0
@@ -352,14 +353,6 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.portal, function (sprite, otherS
         load_world()
         pauseUntil(() => !(mainCharacter.overlapsWith(PortalBoundary)))
         touchingPortal = 0
-    }
-})
-statusbars.onZero(StatusBarKind.Health, function (status) {
-    game.gameOver(false)
-})
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Player, function (sprite, otherSprite) {
-    if (key == 0) {
-        key += 1
     }
 })
 scene.onHitWall(SpriteKind.Projectile, function (sprite2, location) {
@@ -452,6 +445,21 @@ scene.onHitWall(SpriteKind.Projectile, function (sprite2, location) {
         }
     }
 })
+function setVaribles () {
+    key = 0
+    levelTransition = 0
+    level = 1
+    touchingGround = 1
+    touchingPortal = 0
+    world = 1
+    Gravity = 20
+}
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
+    if (key == 0) {
+        key += 1
+        sprites.destroy(otherSprite)
+    }
+})
 function load_world () {
     if (levelTransition == 0) {
         if (world == 1) {
@@ -542,8 +550,36 @@ function load_world () {
         }
     } else {
         setWorld1()
+        placeKeys()
         tiles.placeOnTile(mainCharacter, tiles.getTileLocation(1, 11))
         scaling.scaleToPercent(PortalBoundary, 0, ScaleDirection.Uniformly, ScaleAnchor.Middle)
+    }
+}
+function placeKeys () {
+    star = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . 5 5 . . . . . . 
+        . . 5 5 5 5 5 5 . . 5 . . . . . 
+        . . 5 . 5 . . 5 . . 5 . . . . . 
+        . . . . . . . . 5 5 . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.Food)
+    if (level == 1) {
+        tiles.placeOnTile(star, tiles.getTileLocation(7, 9))
+    } else if (level == 2) {
+        tiles.placeOnTile(star, tiles.getTileLocation(8, 9))
+    } else if (level == 3) {
+        game.gameOver(true)
     }
 }
 function setWorld2 () {
@@ -801,22 +837,19 @@ function setWorld2 () {
         game.gameOver(true)
     }
 }
+let star: Sprite = null
+let Gravity = 0
+let touchingGround = 0
 let portalOrientation = 0
-let portalRay: Sprite = null
-let mainCharacter: Sprite = null
-let PortalBoundary: Sprite = null
-let world = 0
 let touchingPortal = 0
-let level = 0
 let levelTransition = 0
 let key = 0
-key = 0
-levelTransition = 0
-level = 1
-let touchingGround = 1
-touchingPortal = 0
-world = 1
-let Gravity = 20
+let portalRay: Sprite = null
+let level = 0
+let world = 0
+let mainCharacter: Sprite = null
+let PortalBoundary: Sprite = null
+setVaribles()
 PortalBoundary = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
@@ -853,34 +886,10 @@ mainCharacter = sprites.create(img`
     . . . e e f 8 f f . . . . 
     . . . e f . f 4 4 . . . . 
     `, SpriteKind.Player)
-let star = sprites.create(img`
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . 5 5 . . . . . . 
-    . . 5 5 5 5 5 5 . . 5 . . . . . 
-    . . 5 . 5 . . 5 . . 5 . . . . . 
-    . . . . . . . . 5 5 . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    `, SpriteKind.Player)
-let statusbar = statusbars.create(60, 10, StatusBarKind.Health)
 setWorld1()
+placeKeys()
 scene.cameraFollowSprite(mainCharacter)
 tiles.placeOnTile(mainCharacter, tiles.getTileLocation(2, 11))
-tiles.placeOnTile(star, tiles.getTileLocation(7, 9))
-statusbar.setColor(7, 2, 7)
-statusbar.setStatusBarFlag(StatusBarFlag.ConstrainAssignedValue, true)
-statusbar.setOffsetPadding(-43, 5)
-statusbar.setBarBorder(1, 15)
-statusbar.positionDirection(CollisionDirection.Bottom)
 forever(function () {
     mainCharacter.vx = controller.dx(5000)
     mainCharacter.vy += Gravity
@@ -895,8 +904,6 @@ forever(function () {
 })
 forever(function () {
     if (mainCharacter.tileKindAt(TileDirection.Center, assets.tile`myTile3`) || mainCharacter.tileKindAt(TileDirection.Bottom, assets.tile`myTile3`)) {
-        statusbar.value += -25
-        mainCharacter.y += -30
-        mainCharacter.vy = 0
+        game.gameOver(false)
     }
 })

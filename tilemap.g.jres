@@ -40,6 +40,11 @@
         "tilemapTile": true,
         "displayName": "myTile4"
     },
+    "transparency8": {
+        "data": "hwQIAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "tilemapTile": true
+    },
     "level5": {
         "id": "level5",
         "mimeType": "application/mkcd-tilemap",
