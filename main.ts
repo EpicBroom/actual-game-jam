@@ -357,100 +357,6 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.portal, function (sprite, otherS
 statusbars.onZero(StatusBarKind.Health, function (status) {
     game.gameOver(false)
 })
-function load_world () {
-    if (levelTransition == 0) {
-        if (world == 1) {
-            setWorld2()
-        } else {
-            setWorld1()
-        }
-        if (portalOrientation == 0) {
-            if (world == 1) {
-                PortalBoundary.setImage(img`
-                    8 . . . . . . . . . . . . . . . 
-                    8 . . . . . . . . . . . . . . . 
-                    8 . . . . . . . . . . . . . . . 
-                    8 . . . . . . . . . . . . . . . 
-                    8 . . . . . . . . . . . . . . . 
-                    8 . . . . . . . . . . . . . . . 
-                    8 . . . . . . . . . . . . . . . 
-                    8 . . . . . . . . . . . . . . . 
-                    8 . . . . . . . . . . . . . . . 
-                    8 . . . . . . . . . . . . . . . 
-                    8 . . . . . . . . . . . . . . . 
-                    8 . . . . . . . . . . . . . . . 
-                    8 . . . . . . . . . . . . . . . 
-                    8 . . . . . . . . . . . . . . . 
-                    8 . . . . . . . . . . . . . . . 
-                    8 . . . . . . . . . . . . . . . 
-                    `)
-            } else {
-                PortalBoundary.setImage(img`
-                    4 . . . . . . . . . . . . . . . 
-                    4 . . . . . . . . . . . . . . . 
-                    4 . . . . . . . . . . . . . . . 
-                    4 . . . . . . . . . . . . . . . 
-                    4 . . . . . . . . . . . . . . . 
-                    4 . . . . . . . . . . . . . . . 
-                    4 . . . . . . . . . . . . . . . 
-                    4 . . . . . . . . . . . . . . . 
-                    4 . . . . . . . . . . . . . . . 
-                    4 . . . . . . . . . . . . . . . 
-                    4 . . . . . . . . . . . . . . . 
-                    4 . . . . . . . . . . . . . . . 
-                    4 . . . . . . . . . . . . . . . 
-                    4 . . . . . . . . . . . . . . . 
-                    4 . . . . . . . . . . . . . . . 
-                    4 . . . . . . . . . . . . . . . 
-                    `)
-            }
-        } else {
-            if (world == 1) {
-                PortalBoundary.setImage(img`
-                    . . . . . . . . . . . . . . . 8 
-                    . . . . . . . . . . . . . . . 8 
-                    . . . . . . . . . . . . . . . 8 
-                    . . . . . . . . . . . . . . . 8 
-                    . . . . . . . . . . . . . . . 8 
-                    . . . . . . . . . . . . . . . 8 
-                    . . . . . . . . . . . . . . . 8 
-                    . . . . . . . . . . . . . . . 8 
-                    . . . . . . . . . . . . . . . 8 
-                    . . . . . . . . . . . . . . . 8 
-                    . . . . . . . . . . . . . . . 8 
-                    . . . . . . . . . . . . . . . 8 
-                    . . . . . . . . . . . . . . . 8 
-                    . . . . . . . . . . . . . . . 8 
-                    . . . . . . . . . . . . . . . 8 
-                    . . . . . . . . . . . . . . . 8 
-                    `)
-            } else {
-                PortalBoundary.setImage(img`
-                    . . . . . . . . . . . . . . . 4 
-                    . . . . . . . . . . . . . . . 4 
-                    . . . . . . . . . . . . . . . 4 
-                    . . . . . . . . . . . . . . . 4 
-                    . . . . . . . . . . . . . . . 4 
-                    . . . . . . . . . . . . . . . 4 
-                    . . . . . . . . . . . . . . . 4 
-                    . . . . . . . . . . . . . . . 4 
-                    . . . . . . . . . . . . . . . 4 
-                    . . . . . . . . . . . . . . . 4 
-                    . . . . . . . . . . . . . . . 4 
-                    . . . . . . . . . . . . . . . 4 
-                    . . . . . . . . . . . . . . . 4 
-                    . . . . . . . . . . . . . . . 4 
-                    . . . . . . . . . . . . . . . 4 
-                    . . . . . . . . . . . . . . . 4 
-                    `)
-            }
-        }
-    } else {
-        setWorld1()
-        tiles.placeOnTile(mainCharacter, tiles.getTileLocation(1, 11))
-        scaling.scaleToPercent(PortalBoundary, 0, ScaleDirection.Uniformly, ScaleAnchor.Middle)
-    }
-}
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Player, function (sprite, otherSprite) {
     if (key == 0) {
         key += 1
@@ -546,6 +452,100 @@ scene.onHitWall(SpriteKind.Projectile, function (sprite2, location) {
         }
     }
 })
+function load_world () {
+    if (levelTransition == 0) {
+        if (world == 1) {
+            setWorld2()
+        } else {
+            setWorld1()
+        }
+        if (portalOrientation == 0) {
+            if (world == 1) {
+                PortalBoundary.setImage(img`
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    8 . . . . . . . . . . . . . . . 
+                    `)
+            } else {
+                PortalBoundary.setImage(img`
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    4 . . . . . . . . . . . . . . . 
+                    `)
+            }
+        } else {
+            if (world == 1) {
+                PortalBoundary.setImage(img`
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    . . . . . . . . . . . . . . . 8 
+                    `)
+            } else {
+                PortalBoundary.setImage(img`
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    . . . . . . . . . . . . . . . 4 
+                    `)
+            }
+        }
+    } else {
+        setWorld1()
+        tiles.placeOnTile(mainCharacter, tiles.getTileLocation(1, 11))
+        scaling.scaleToPercent(PortalBoundary, 0, ScaleDirection.Uniformly, ScaleAnchor.Middle)
+    }
+}
 function setWorld2 () {
     world = 2
     scene.setBackgroundImage(img`
@@ -896,6 +896,7 @@ forever(function () {
 forever(function () {
     if (mainCharacter.tileKindAt(TileDirection.Center, assets.tile`myTile3`) || mainCharacter.tileKindAt(TileDirection.Bottom, assets.tile`myTile3`)) {
         statusbar.value += -25
-        pause(1000)
+        mainCharacter.y += -30
+        mainCharacter.vy = 0
     }
 })
