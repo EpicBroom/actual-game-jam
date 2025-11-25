@@ -302,7 +302,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile`, function (sprite, lo
         levelTransition = 1
         key = 0
         level += 1
-        load_world()
+        LoadWorld()
         levelTransition = 0
     }
 })
@@ -350,7 +350,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 sprites.onOverlap(SpriteKind.Player, SpriteKind.portal, function (sprite, otherSprite) {
     if (touchingPortal == 0) {
         touchingPortal = 1
-        load_world()
+        LoadWorld()
         pauseUntil(() => !(mainCharacter.overlapsWith(PortalBoundary)))
         touchingPortal = 0
     }
@@ -466,19 +466,19 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSpr
         sprites.destroy(otherSprite)
     }
 })
-function load_world () {
+function LoadWorld () {
     if (levelTransition == 0) {
         if (world == 1) {
             setWorld2()
         } else {
             setWorld1()
         }
-    } else {
         if (portalOrientation == 0) {
             SetPortalLeft()
         } else {
             SetPortalRight()
         }
+    } else {
         setWorld1()
         placeKeys()
         tiles.placeOnTile(mainCharacter, tiles.getTileLocation(1, 11))
