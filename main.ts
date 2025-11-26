@@ -266,7 +266,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile`, function (sprite, lo
     }
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (controller.right.isPressed()) {
+    if (Direction == 1) {
         if (world == 1) {
             portalRay = sprites.createProjectileFromSprite(img`
                 . . . . . . . . . . . . . . . . 
@@ -774,6 +774,7 @@ let touchingGround = 0
 let portalOrientation = 0
 let touchingPortal = 0
 let portalRay: Sprite = null
+let Direction = 0
 let levelTransition = 0
 let key = 0
 let level = 0
@@ -821,6 +822,13 @@ setWorld1()
 placeKeys()
 scene.cameraFollowSprite(mainCharacter)
 tiles.placeOnTile(mainCharacter, tiles.getTileLocation(2, 11))
+forever(function () {
+    if (controller.right.isPressed()) {
+        Direction = 1
+    } else if (controller.left.isPressed()) {
+        Direction = 0
+    }
+})
 forever(function () {
     mainCharacter.vx = controller.dx(5000)
     mainCharacter.vy += Gravity
