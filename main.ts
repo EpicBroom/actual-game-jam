@@ -135,34 +135,35 @@ function setWorld1 () {
         if (Came == 0) {
             tiles.setCurrentTilemap(tilemap`level4World1`)
         } else if (Came == 1) {
-            tiles.setCurrentTilemap(tilemap`level12`)
-            tiles.setTileAt(Main_Location, sprites.dungeon.floorLight2)
-            tiles.setWallAt(Main_Location, true)
-        } else if (Crack_Wall == 1) {
-            tiles.setCurrentTilemap(tilemap`level13`)
-        } else if (Came == 1 && Crack_Wall == 1) {
-            tiles.setCurrentTilemap(tilemap`level14`)
-            tiles.setTileAt(Main_Location, sprites.dungeon.floorLight2)
-            tiles.setWallAt(Main_Location, true)
+            if (levelFinished == 0) {
+                tiles.setCurrentTilemap(tilemap`level15`)
+            } else {
+                tiles.setCurrentTilemap(tilemap`level12`)
+            }
+            if (keymoved == 1) {
+                keymoved = 0
+                star.y += -48
+            }
         }
     } else {
         game.gameOver(true)
     }
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (HasBlock == 1) {
-        Crack_Wall = 1
+    if (HasBlock == 1 && (tiles.tileAtLocationEquals(mainCharacter.tilemapLocation(), assets.tile`Button_Off`) || tiles.tileAtLocationEquals(mainCharacter.tilemapLocation(), assets.tile`transparency16`))) {
         if (tiles.tileAtLocationEquals(mainCharacter.tilemapLocation(), assets.tile`Button_Off`)) {
-            tiles.setTileAt(tiles.getTileLocation(7, 11), sprites.dungeon.floorLight3)
+            Came = 1
+            tiles.setTileAt(tiles.getTileLocation(7, 11), assets.tile`transparency16`)
             tiles.setWallAt(tiles.getTileLocation(7, 11), false)
-            tiles.setTileAt(tiles.getTileLocation(7, 10), sprites.dungeon.floorLight3)
+            tiles.setTileAt(tiles.getTileLocation(7, 10), assets.tile`transparency16`)
             tiles.setWallAt(tiles.getTileLocation(7, 10), false)
+            music.play(music.melodyPlayable(music.baDing), music.PlaybackMode.InBackground)
         }
         tiles.setTileAt(mainCharacter.tilemapLocation(), sprites.dungeon.floorLight2)
-        HasBlock = 0
         Main_Location = mainCharacter.tilemapLocation()
-        Came = 1
-        tiles.setWallAt(Main_Location, true)
+        HasBlock = 0
+        pause(1000)
+        Collectable_On = 1
     }
 })
 browserEvents.Four.onEvent(browserEvents.KeyEvent.Pressed, function () {
@@ -171,7 +172,7 @@ browserEvents.Four.onEvent(browserEvents.KeyEvent.Pressed, function () {
     placeKeys()
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile`, function (sprite, location) {
-    if (key == 1) {
+    if (true) {
         levelTransition = 1
         key = 0
         level += 1
@@ -316,8 +317,22 @@ function SetPortalLeft () {
             `)
     }
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`Lever_Off0`, function (sprite, location) {
+    if (key == 1) {
+        if (controller.B.isPressed()) {
+            tiles.setTileAt(location, assets.tile`Lever_On`)
+            levelFinished = 1
+            tiles.setTileAt(tiles.getTileLocation(17, 10), assets.tile`transparency8`)
+            tiles.setTileAt(tiles.getTileLocation(17, 11), assets.tile`transparency8`)
+            tiles.setWallAt(tiles.getTileLocation(17, 10), false)
+            tiles.setWallAt(tiles.getTileLocation(17, 11), false)
+        }
+    }
+})
 controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
-    LoadWorld()
+    tiles.placeOnTile(mainCharacter, tiles.getTileLocation(1, 11))
+    scaling.scaleToPercent(PortalBoundary, 0, ScaleDirection.Uniformly, ScaleAnchor.Middle)
+    setWorld1()
 })
 function SetPortalRight () {
     if (world == 1) {
@@ -361,7 +376,7 @@ function SetPortalRight () {
     }
 }
 scene.onHitWall(SpriteKind.Projectile, function (sprite2, location) {
-    if (!(tiles.tileAtLocationEquals(location, sprites.dungeon.floorLight0) || tiles.tileAtLocationEquals(location, sprites.dungeon.floorLight1))) {
+    if (!(tiles.tileAtLocationEquals(location, sprites.dungeon.floorLight0) || tiles.tileAtLocationEquals(location, sprites.dungeon.floorLight1) || tiles.tileAtLocationEquals(location, sprites.dungeon.floorLight3))) {
         scaling.scaleToPercent(PortalBoundary, 100, ScaleDirection.Uniformly, ScaleAnchor.Middle)
         if (portalRay.isHittingTile(CollisionDirection.Left)) {
             tiles.placeOnTile(PortalBoundary, tiles.getTileLocation(location.column + 1, location.row))
@@ -375,6 +390,7 @@ scene.onHitWall(SpriteKind.Projectile, function (sprite2, location) {
     }
 })
 function setVaribles () {
+    levelFinished = 0
     key = 0
     levelTransition = 0
     level = 1
@@ -455,7 +471,11 @@ function placeKeys () {
     } else if (level == 3) {
         tiles.placeOnTile(star, tiles.getTileLocation(13, 4))
     } else if (level == 4) {
-        tiles.placeOnTile(star, tiles.getTileLocation(11, 4))
+        if (world == 1) {
+            tiles.placeOnTile(star, tiles.getTileLocation(11, 4))
+        } else {
+            tiles.placeOnTile(star, tiles.getTileLocation(11, 7))
+        }
     } else {
     	
     }
@@ -595,14 +615,21 @@ function setWorld2 () {
             tiles.setCurrentTilemap(tilemap`level4World2`)
             Collectable_On = 1
         } else if (Block_Collect == 1) {
-            tiles.setCurrentTilemap(tilemap`level11`)
+            if (levelFinished == 0) {
+                tiles.setCurrentTilemap(tilemap`level10`)
+            } else {
+                tiles.setCurrentTilemap(tilemap`level11`)
+            }
+            tiles.setTileAt(Main_Location, sprites.dungeon.floorLight2)
+            if (keymoved == 0) {
+                keymoved = 1
+                star.y += 48
+            }
         }
     } else {
         game.gameOver(true)
     }
 }
-let star: Sprite = null
-let Collectable_On = 0
 let Block_Collect = 0
 let Gravity = 0
 let touchingGround = 0
@@ -610,11 +637,14 @@ let portalOrientation = 0
 let touchingPortal = 0
 let portalRay: Sprite = null
 let Direction = 0
-let levelTransition = 0
 let key = 0
-let HasBlock = 0
+let levelTransition = 0
+let Collectable_On = 0
 let Main_Location: tiles.Location = null
-let Crack_Wall = 0
+let HasBlock = 0
+let star: Sprite = null
+let keymoved = 0
+let levelFinished = 0
 let Came = 0
 let level = 0
 let world = 0
