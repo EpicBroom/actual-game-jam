@@ -131,10 +131,45 @@ function setWorld1 () {
         tiles.setCurrentTilemap(tilemap`level1world1`)
     } else if (level == 3) {
         tiles.setCurrentTilemap(tilemap`level3world1`)
+    } else if (level == 4) {
+        if (Came == 0) {
+            tiles.setCurrentTilemap(tilemap`level4World1`)
+        } else if (Came == 1) {
+            tiles.setCurrentTilemap(tilemap`level12`)
+            tiles.setTileAt(Main_Location, sprites.dungeon.floorLight2)
+            tiles.setWallAt(Main_Location, true)
+        } else if (Crack_Wall == 1) {
+            tiles.setCurrentTilemap(tilemap`level13`)
+        } else if (Came == 1 && Crack_Wall == 1) {
+            tiles.setCurrentTilemap(tilemap`level14`)
+            tiles.setTileAt(Main_Location, sprites.dungeon.floorLight2)
+            tiles.setWallAt(Main_Location, true)
+        }
     } else {
         game.gameOver(true)
     }
 }
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (HasBlock == 1) {
+        Crack_Wall = 1
+        if (tiles.tileAtLocationEquals(mainCharacter.tilemapLocation(), assets.tile`Button_Off`)) {
+            tiles.setTileAt(tiles.getTileLocation(7, 11), sprites.dungeon.floorLight3)
+            tiles.setWallAt(tiles.getTileLocation(7, 11), false)
+            tiles.setTileAt(tiles.getTileLocation(7, 10), sprites.dungeon.floorLight3)
+            tiles.setWallAt(tiles.getTileLocation(7, 10), false)
+        }
+        tiles.setTileAt(mainCharacter.tilemapLocation(), sprites.dungeon.floorLight2)
+        HasBlock = 0
+        Main_Location = mainCharacter.tilemapLocation()
+        Came = 1
+        tiles.setWallAt(Main_Location, true)
+    }
+})
+browserEvents.Four.onEvent(browserEvents.KeyEvent.Pressed, function () {
+    tiles.setCurrentTilemap(tilemap`level4World1`)
+    level = 4
+    placeKeys()
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile`, function (sprite, location) {
     if (key == 1) {
         levelTransition = 1
@@ -281,6 +316,9 @@ function SetPortalLeft () {
             `)
     }
 }
+controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
+    LoadWorld()
+})
 function SetPortalRight () {
     if (world == 1) {
         PortalBoundary.setImage(img`
@@ -323,7 +361,7 @@ function SetPortalRight () {
     }
 }
 scene.onHitWall(SpriteKind.Projectile, function (sprite2, location) {
-    if (!(tiles.tileAtLocationEquals(location, sprites.dungeon.floorLight0))) {
+    if (!(tiles.tileAtLocationEquals(location, sprites.dungeon.floorLight0) || tiles.tileAtLocationEquals(location, sprites.dungeon.floorLight1))) {
         scaling.scaleToPercent(PortalBoundary, 100, ScaleDirection.Uniformly, ScaleAnchor.Middle)
         if (portalRay.isHittingTile(CollisionDirection.Left)) {
             tiles.placeOnTile(PortalBoundary, tiles.getTileLocation(location.column + 1, location.row))
@@ -344,6 +382,8 @@ function setVaribles () {
     touchingPortal = 0
     world = 1
     Gravity = 15
+    HasBlock = 0
+    Block_Collect = 0
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
     if (key == 0) {
@@ -380,6 +420,14 @@ browserEvents.One.onEvent(browserEvents.KeyEvent.Pressed, function () {
     level = 1
     placeKeys()
 })
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.floorLight2, function (sprite, location) {
+    if (Collectable_On == 1) {
+        tiles.setTileAt(location, assets.tile`transparency8`)
+        HasBlock = 1
+        Collectable_On = 0
+        Block_Collect = 1
+    }
+})
 function placeKeys () {
     sprites.destroyAllSpritesOfKind(SpriteKind.Food)
     star = sprites.create(img`
@@ -406,6 +454,8 @@ function placeKeys () {
         tiles.placeOnTile(star, tiles.getTileLocation(8, 9))
     } else if (level == 3) {
         tiles.placeOnTile(star, tiles.getTileLocation(13, 4))
+    } else if (level == 4) {
+        tiles.placeOnTile(star, tiles.getTileLocation(11, 4))
     } else {
     	
     }
@@ -540,11 +590,20 @@ function setWorld2 () {
         tiles.setCurrentTilemap(tilemap`level2world2`)
     } else if (level == 3) {
         tiles.setCurrentTilemap(tilemap`level3world2`)
+    } else if (level == 4) {
+        if (Block_Collect == 0) {
+            tiles.setCurrentTilemap(tilemap`level4World2`)
+            Collectable_On = 1
+        } else if (Block_Collect == 1) {
+            tiles.setCurrentTilemap(tilemap`level11`)
+        }
     } else {
         game.gameOver(true)
     }
 }
 let star: Sprite = null
+let Collectable_On = 0
+let Block_Collect = 0
 let Gravity = 0
 let touchingGround = 0
 let portalOrientation = 0
@@ -553,6 +612,10 @@ let portalRay: Sprite = null
 let Direction = 0
 let levelTransition = 0
 let key = 0
+let HasBlock = 0
+let Main_Location: tiles.Location = null
+let Crack_Wall = 0
+let Came = 0
 let level = 0
 let world = 0
 let mainCharacter: Sprite = null
@@ -599,19 +662,19 @@ placeKeys()
 scene.cameraFollowSprite(mainCharacter)
 tiles.placeOnTile(mainCharacter, tiles.getTileLocation(2, 11))
 forever(function () {
-    if (controller.right.isPressed()) {
-        Direction = 1
-    } else if (controller.left.isPressed()) {
-        Direction = 0
-    }
-})
-forever(function () {
     mainCharacter.vx = controller.dx(5000)
     mainCharacter.vy += Gravity
 })
 forever(function () {
     if (mainCharacter.tileKindAt(TileDirection.Center, assets.tile`myTile3`) || mainCharacter.tileKindAt(TileDirection.Bottom, assets.tile`myTile3`)) {
         game.gameOver(false)
+    }
+})
+forever(function () {
+    if (controller.right.isPressed()) {
+        Direction = 1
+    } else if (controller.left.isPressed()) {
+        Direction = 0
     }
 })
 forever(function () {
@@ -626,5 +689,19 @@ forever(function () {
     if (mainCharacter.tileKindAt(TileDirection.Right, sprites.builtin.field1) && key == 1) {
         tiles.setTileAt(mainCharacter.tilemapLocation().getNeighboringLocation(CollisionDirection.Right), assets.tile`doorOpen`)
         tiles.setWallAt(mainCharacter.tilemapLocation().getNeighboringLocation(CollisionDirection.Right), false)
+    }
+})
+forever(function () {
+    if (mainCharacter.tileKindAt(TileDirection.Center, assets.tile`myTile18`)) {
+        Gravity = 0
+    } else if (!(mainCharacter.tileKindAt(TileDirection.Center, assets.tile`myTile18`))) {
+        Gravity = 15
+        if (controller.right.isPressed()) {
+            Direction = 1
+        } else if (controller.left.isPressed()) {
+            Direction = 0
+        }
+    } else {
+    	
     }
 })
