@@ -235,6 +235,11 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.portal, function (sprite, otherS
         touchingPortal = 0
     }
 })
+browserEvents.Three.onEvent(browserEvents.KeyEvent.Pressed, function () {
+    tiles.setCurrentTilemap(tilemap`level3world1`)
+    level = 3
+    placeKeys()
+})
 function SetPortalLeft () {
     if (world == 1) {
         PortalBoundary.setImage(img`
@@ -338,13 +343,18 @@ function setVaribles () {
     touchingGround = 1
     touchingPortal = 0
     world = 1
-    Gravity = 20
+    Gravity = 15
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
     if (key == 0) {
         key += 1
         sprites.destroy(otherSprite)
     }
+})
+browserEvents.Two.onEvent(browserEvents.KeyEvent.Pressed, function () {
+    tiles.setCurrentTilemap(tilemap`level1world1`)
+    level = 2
+    placeKeys()
 })
 function LoadWorld () {
     if (levelTransition == 0) {
@@ -365,7 +375,13 @@ function LoadWorld () {
         scaling.scaleToPercent(PortalBoundary, 0, ScaleDirection.Uniformly, ScaleAnchor.Middle)
     }
 }
+browserEvents.One.onEvent(browserEvents.KeyEvent.Pressed, function () {
+    tiles.setCurrentTilemap(tilemap`level2world1`)
+    level = 1
+    placeKeys()
+})
 function placeKeys () {
+    sprites.destroyAllSpritesOfKind(SpriteKind.Food)
     star = sprites.create(img`
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
@@ -604,5 +620,11 @@ forever(function () {
         mainCharacter.vy = -200
         pauseUntil(() => mainCharacter.isHittingTile(CollisionDirection.Bottom))
         touchingGround = 1
+    }
+})
+forever(function () {
+    if (mainCharacter.tileKindAt(TileDirection.Right, sprites.builtin.field1) && key == 1) {
+        tiles.setTileAt(mainCharacter.tilemapLocation().getNeighboringLocation(CollisionDirection.Right), assets.tile`doorOpen`)
+        tiles.setWallAt(mainCharacter.tilemapLocation().getNeighboringLocation(CollisionDirection.Right), false)
     }
 })

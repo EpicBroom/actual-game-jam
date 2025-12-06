@@ -8,7 +8,8 @@
         "arcade-sprite-data": "github:microsoft/arcade-sprite-data#v0.2.1",
         "sprite-scaling": "*",
         "pxt-zoom": "github:kiwiphoenix364/pxt-zoom#v3.0.3",
-        "small-tilemaps": "github:riknoll/small-tilemaps#v0.0.2"
+        "small-tilemaps": "github:riknoll/small-tilemaps#v0.0.2",
+        "browser-events": "*"
     },
     "files": [
         "main.blocks",
