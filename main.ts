@@ -909,7 +909,7 @@ function setWorld2 () {
             }
         }
     } else if (level == 5) {
-        tiles.setCurrentTilemap(tilemap`level16`)
+        tiles.setCurrentTilemap(tilemap`level35`)
     } else {
         game.gameOver(true)
     }
@@ -922,7 +922,7 @@ browserEvents.Five.onEvent(browserEvents.KeyEvent.Pressed, function () {
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Lava, function (sprite, otherSprite) {
     sprites.destroy(otherSprite, effects.coolRadial, 1000)
     for (let value of tiles.getTilesByType(assets.tile`myTile3`)) {
-        tiles.setTileAt(value, assets.tile`Obsidian_Ice`)
+        tiles.setTileAt(value, assets.tile`transparency16`)
     }
 })
 let Ice_Potion: Sprite = null
