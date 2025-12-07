@@ -163,13 +163,11 @@ function setWorld1 () {
             if (HasBlock == 0) {
                 tiles.setTileAt(Main_Location, sprites.dungeon.floorLight2)
             }
-            if (keymoved == 1) {
-                keymoved = 0
-                star.y += -48
-            }
         }
-    } else if (level == 5) {
-        tiles.setCurrentTilemap(tilemap`level5_World1`)
+        if (keymoved == 1) {
+            keymoved = 0
+            star.y += -48
+        }
     } else {
         game.gameOver(true)
     }
@@ -288,6 +286,30 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         }
     }
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile4`, function (sprite, location) {
+    if (touchingSign == 0) {
+        if (level == 1) {
+            if (world == 1) {
+                game.splash("Press A facing the wall to create a time portal")
+            } else {
+                game.splash("Collect the key to advance")
+            }
+        } else if (level == 3) {
+            if (world == 1) {
+                game.splash("Try finding a suitable portal surface somewhere")
+            } else {
+                game.splash("Don't worry, I believe in you!")
+            }
+        } else if (level == 4) {
+            if (world == 1) {
+                game.splash("If you get stuck, ", "press menu")
+            } else {
+                game.splash("You are close to the end. Don't give up now!")
+            }
+        }
+        touchingSign = 1
+    }
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.portal, function (sprite, otherSprite) {
     if (touchingPortal == 0) {
         touchingPortal = 1
@@ -348,29 +370,6 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Lever_Off0`, function (sprite
             tiles.setCurrentTilemap(tilemap`level18`)
             levelFinished = 1
         }
-    }
-})
-browserEvents.R.onEvent(browserEvents.KeyEvent.Pressed, function () {
-    if (Ice_Projectile == 0 && (world == 2 && level == 5)) {
-        Ice = sprites.createProjectileFromSprite(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . 9 9 . . . . . . . 
-            . . . . . . . 9 9 . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, mainCharacter, 50, 50)
-        Ice.follow(Lava, 25)
     }
 })
 controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -473,6 +472,7 @@ function LoadWorld () {
         placeKeys()
         tiles.placeOnTile(mainCharacter, tiles.getTileLocation(1, 11))
         scaling.scaleToPercent(PortalBoundary, 0, ScaleDirection.Uniformly, ScaleAnchor.Middle)
+        touchingSign = 0
     }
 }
 browserEvents.One.onEvent(browserEvents.KeyEvent.Pressed, function () {
@@ -487,83 +487,6 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.floorLight2, function (sp
         Collectable_On = 0
         Block_Collect = 1
     }
-})
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Potion, function (sprite, otherSprite) {
-    Ice_Projectile = 1
-    pause(500)
-    otherSprite.z = 3
-    characterAnimations.loopFrames(
-    otherSprite,
-    [img`
-        ....................
-        ....................
-        ....................
-        ....................
-        ....................
-        ....................
-        .........888........
-        .........888........
-        ......888888888.....
-        ........fffff.......
-        .......8888888......
-        .......8998888......
-        .......8988888......
-        .......8888888......
-        .......8888888......
-        .......8888888......
-        ......888888888.....
-        ......fffffffff.....
-        ....................
-        ....................
-        `,img`
-        ....................
-        ....................
-        ....................
-        ....................
-        ....................
-        ....................
-        .........888........
-        .........888........
-        ......888888888.....
-        ........fffff.......
-        .......9999999......
-        .......9999999......
-        .......9999999......
-        .......9999999......
-        .......8888888......
-        .......8888888......
-        ......888888888.....
-        ......fffffffff.....
-        ....................
-        ....................
-        `,img`
-        ....................
-        ....................
-        ....................
-        ....................
-        ....................
-        ....................
-        .........888........
-        .........888........
-        ......888888888.....
-        ........fffff.......
-        .......9999999......
-        .......9999999......
-        .......9999999......
-        .......9999999......
-        .......9999999......
-        .......9999999......
-        ......888888888.....
-        ......fffffffff.....
-        ....................
-        ....................
-        `],
-    500,
-    characterAnimations.rule(Predicate.NotMoving)
-    )
-    timer.after(500, function () {
-        sprites.destroy(otherSprite, effects.coolRadial, 500)
-    })
 })
 // sprites.onOverlap(SpriteKind.Player, SpriteKind.Potion, function (sprite, otherSprite) {
 // characterAnimations.loopFrames(
@@ -916,40 +839,27 @@ function setWorld2 () {
                 } else {
                     tiles.setCurrentTilemap(tilemap`level18`)
                 }
-                if (keymoved == 0) {
-                    keymoved = 1
-                    star.y += 48
-                }
             }
             if (HasBlock == 0) {
                 tiles.setTileAt(Main_Location, sprites.dungeon.floorLight2)
             }
         }
-    } else if (level == 5) {
-        tiles.setCurrentTilemap(tilemap`level16`)
+        if (keymoved == 0) {
+            keymoved = 1
+            star.y += 48
+        }
     } else {
         game.gameOver(true)
     }
 }
-browserEvents.Five.onEvent(browserEvents.KeyEvent.Pressed, function () {
-    tiles.setCurrentTilemap(tilemap`level5_World1`)
-    level = 5
-    placeKeys()
-})
-sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Lava, function (sprite, otherSprite) {
-    sprites.destroy(otherSprite, effects.coolRadial, 1000)
-    for (let value of tiles.getTilesByType(assets.tile`myTile3`)) {
-        tiles.setTileAt(value, assets.tile`transparency16`)
-    }
-})
+let Lava: Sprite = null
 let Ice_Potion: Sprite = null
 let Block_Collect = 0
 let Gravity = 0
 let touchingGround = 0
 let portalOrientation = 0
-let Lava: Sprite = null
-let Ice: Sprite = null
 let touchingPortal = 0
+let touchingSign = 0
 let portalRay: Sprite = null
 let Direction = 0
 let key = 0
@@ -970,7 +880,6 @@ let world = 0
 let mainCharacter: Sprite = null
 let PortalBoundary: Sprite = null
 let Ice_Projectile = 0
-Ice_Projectile = 0
 setVaribles()
 PortalBoundary = sprites.create(img`
     . . . . . . . . . . . . . . . . 
