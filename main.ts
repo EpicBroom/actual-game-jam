@@ -1,6 +1,7 @@
 namespace SpriteKind {
     export const portal = SpriteKind.create()
     export const Potion = SpriteKind.create()
+    export const Lava = SpriteKind.create()
 }
 function setWorld1 () {
     world = 1
@@ -130,7 +131,6 @@ function setWorld1 () {
     if (level == 1) {
         if (First_Time == 1) {
             First_Time = 2
-            game.splash("Remember:", "467")
             tiles.setCurrentTilemap(tilemap`level2world1`)
         } else if (First_Time != 1) {
             tiles.setCurrentTilemap(tilemap`level2world1`)
@@ -138,14 +138,12 @@ function setWorld1 () {
     } else if (level == 2) {
         if (First_Time == 2) {
             First_Time = 3
-            game.splash("Remember:", "6")
             tiles.setCurrentTilemap(tilemap`level1world1`)
         } else {
             tiles.setCurrentTilemap(tilemap`level1world1`)
         }
     } else if (level == 3) {
         if (First_Time == 3) {
-            game.splash("Remember:", "7")
             tiles.setCurrentTilemap(tilemap`level3world1`)
         } else {
             tiles.setCurrentTilemap(tilemap`level3world1`)
@@ -176,25 +174,6 @@ function setWorld1 () {
         game.gameOver(true)
     }
 }
-// scene.onHitWall(SpriteKind.Player, function (sprite, location) {
-// if (sprite.tileKindAt(TileDirection.Bottom, assets.tile`Slime`) && Ask_Once == 0 && Slime_On == 0) {
-// if (Passcode == 0) {
-// pause(200)
-// if (game.askForNumber("pls enter passcode to use slime", 3) == 467) {
-// Slime_On = 1
-// Ask_Once = 1
-// Passcode = 1
-// music.play(music.melodyPlayable(music.jumpUp), music.PlaybackMode.UntilDone)
-// tiles.placeOnTile(sprite, tiles.getTileLocation(6, 11))
-// }
-// }
-// } else if (sprite.tileKindAt(TileDirection.Bottom, assets.tile`Slime`) && Ask_Once == 1 && Slime_On == 1) {
-// sprite.vy += -190
-// }
-// })
-browserEvents.L.onEvent(browserEvents.KeyEvent.Pressed, function () {
-	
-})
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (HasBlock == 1 && (tiles.tileAtLocationEquals(mainCharacter.tilemapLocation(), assets.tile`Button_Off`) || tiles.tileAtLocationEquals(mainCharacter.tilemapLocation(), assets.tile`transparency16`))) {
         if (tiles.tileAtLocationEquals(mainCharacter.tilemapLocation(), assets.tile`Button_Off`)) {
@@ -371,6 +350,12 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Lever_Off0`, function (sprite
         }
     }
 })
+browserEvents.R.onEvent(browserEvents.KeyEvent.Pressed, function () {
+    if (Ice_Projectile == 0 && (world == 2 && level == 5)) {
+        Ice = sprites.createProjectileFromSprite(assets.image`Ice`, mainCharacter, 20, 25)
+        Ice.follow(Lava, 25)
+    }
+})
 controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
     tiles.placeOnTile(mainCharacter, tiles.getTileLocation(1, 11))
     scaling.scaleToPercent(PortalBoundary, 0, ScaleDirection.Uniformly, ScaleAnchor.Middle)
@@ -485,6 +470,83 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.floorLight2, function (sp
         Collectable_On = 0
         Block_Collect = 1
     }
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Potion, function (sprite, otherSprite) {
+    Ice_Projectile = 1
+    pause(500)
+    otherSprite.z = 3
+    characterAnimations.loopFrames(
+    otherSprite,
+    [img`
+        ....................
+        ....................
+        ....................
+        ....................
+        ....................
+        ....................
+        .........888........
+        .........888........
+        ......888888888.....
+        ........fffff.......
+        .......8888888......
+        .......8998888......
+        .......8988888......
+        .......8888888......
+        .......8888888......
+        .......8888888......
+        ......888888888.....
+        ......fffffffff.....
+        ....................
+        ....................
+        `,img`
+        ....................
+        ....................
+        ....................
+        ....................
+        ....................
+        ....................
+        .........888........
+        .........888........
+        ......888888888.....
+        ........fffff.......
+        .......9999999......
+        .......9999999......
+        .......9999999......
+        .......9999999......
+        .......8888888......
+        .......8888888......
+        ......888888888.....
+        ......fffffffff.....
+        ....................
+        ....................
+        `,img`
+        ....................
+        ....................
+        ....................
+        ....................
+        ....................
+        ....................
+        .........888........
+        .........888........
+        ......888888888.....
+        ........fffff.......
+        .......9999999......
+        .......9999999......
+        .......9999999......
+        .......9999999......
+        .......9999999......
+        .......9999999......
+        ......888888888.....
+        ......fffffffff.....
+        ....................
+        ....................
+        `],
+    500,
+    characterAnimations.rule(Predicate.NotMoving)
+    )
+    timer.after(500, function () {
+        sprites.destroy(otherSprite, effects.coolRadial, 500)
+    })
 })
 // sprites.onOverlap(SpriteKind.Player, SpriteKind.Potion, function (sprite, otherSprite) {
 // characterAnimations.loopFrames(
@@ -679,6 +741,12 @@ function placeKeys () {
         } else {
             tiles.placeOnTile(star, tiles.getTileLocation(11, 7))
         }
+    } else if (level == 5) {
+        if (world == 2) {
+            tiles.placeOnTile(star, tiles.getTileLocation(12, 11))
+        } else {
+            tiles.placeOnTile(star, tiles.getTileLocation(11, 7))
+        }
     } else {
     	
     }
@@ -824,7 +892,7 @@ function setWorld2 () {
             Collectable_On = 1
         } else if (Block_Collect == 1) {
             if (Came == 0) {
-                tiles.setCurrentTilemap(tilemap`level21`)
+                tiles.setCurrentTilemap(tilemap`level20`)
             } else if (Came == 1) {
                 if (levelFinished == 0) {
                     tiles.setCurrentTilemap(tilemap`level11`)
@@ -851,11 +919,19 @@ browserEvents.Five.onEvent(browserEvents.KeyEvent.Pressed, function () {
     level = 5
     placeKeys()
 })
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Lava, function (sprite, otherSprite) {
+    sprites.destroy(otherSprite, effects.coolRadial, 1000)
+    for (let value of tiles.getTilesByType(assets.tile`myTile3`)) {
+        tiles.setTileAt(value, assets.tile`Obsidian_Ice`)
+    }
+})
 let Ice_Potion: Sprite = null
 let Block_Collect = 0
 let Gravity = 0
 let touchingGround = 0
 let portalOrientation = 0
+let Lava: Sprite = null
+let Ice: Sprite = null
 let touchingPortal = 0
 let portalRay: Sprite = null
 let Direction = 0
@@ -877,6 +953,7 @@ let world = 0
 let mainCharacter: Sprite = null
 let PortalBoundary: Sprite = null
 let Ice_Projectile = 0
+Ice_Projectile = 0
 setVaribles()
 PortalBoundary = sprites.create(img`
     . . . . . . . . . . . . . . . . 
@@ -914,10 +991,36 @@ mainCharacter = sprites.create(img`
     . . . e e f 8 f f . . . . 
     . . . e f . f 4 4 . . . . 
     `, SpriteKind.Player)
+mainCharacter.z = 2
 setWorld1()
 placeKeys()
 scene.cameraFollowSprite(mainCharacter)
 tiles.placeOnTile(mainCharacter, tiles.getTileLocation(2, 11))
+forever(function () {
+    for (let value of tiles.getTilesByType(assets.tile`myTile21`)) {
+        Ice_Potion = sprites.create(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . 8 8 8 . . . . . . . 
+            . . . . . . 8 8 8 . . . . . . . 
+            . . . 8 8 8 8 8 8 8 8 8 . . . . 
+            . . . . . f f f f f . . . . . . 
+            . . . . 8 8 8 8 8 8 8 . . . . . 
+            . . . . 8 9 9 8 8 8 8 . . . . . 
+            . . . . 8 9 8 8 8 8 8 . . . . . 
+            . . . . 8 8 8 8 8 8 8 . . . . . 
+            . . . . 8 8 8 8 8 8 8 . . . . . 
+            . . . . 8 8 8 8 8 8 8 . . . . . 
+            . . . 8 8 8 8 8 8 8 8 8 . . . . 
+            . . . f f f f f f f f f . . . . 
+            `, SpriteKind.Potion)
+        Ice_Potion.z = 1
+        tiles.placeOnTile(Ice_Potion, value)
+        tiles.setTileAt(value, assets.tile`transparency8`)
+    }
+})
 forever(function () {
     if (controller.right.isPressed()) {
         Direction = 1
@@ -961,26 +1064,26 @@ forever(function () {
     }
 })
 forever(function () {
-    for (let value of tiles.getTilesByType(assets.tile`myTile21`)) {
-        Ice_Potion = sprites.create(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . 8 8 8 . . . . . . . 
-            . . . . . . 8 8 8 . . . . . . . 
-            . . . 8 8 8 8 8 8 8 8 8 . . . . 
-            . . . . . f f f f f . . . . . . 
-            . . . . 8 8 8 8 8 8 8 . . . . . 
-            . . . . 8 9 9 8 8 8 8 . . . . . 
-            . . . . 8 9 8 8 8 8 8 . . . . . 
-            . . . . 8 8 8 8 8 8 8 . . . . . 
-            . . . . 8 8 8 8 8 8 8 . . . . . 
-            . . . . 8 8 8 8 8 8 8 . . . . . 
-            . . . 8 8 8 8 8 8 8 8 8 . . . . 
-            . . . f f f f f f f f f . . . . 
-            `, SpriteKind.Potion)
-        tiles.placeOnTile(Ice_Potion, value)
-        tiles.setTileAt(value, assets.tile`transparency8`)
+    if (world == 2 && level == 5) {
+        Lava = sprites.create(assets.image`Lava_Tile`, SpriteKind.Lava)
+        Lava.setImage(img`
+            ................................................................................
+            ................................................................................
+            ................................................................................
+            ................................................................................
+            ................................................................................
+            ................................................................................
+            ................................................................................
+            ................................................................................
+            ................................................................................
+            ................................................................................
+            ................................................................................
+            ................................................................................
+            ................................................................................
+            ................................................................................
+            ................................................................................
+            ................................................................................
+            `)
+        tiles.placeOnTile(Lava, tiles.getTileLocation(9, 12))
     }
 })
