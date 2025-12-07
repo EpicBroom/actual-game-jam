@@ -9,7 +9,9 @@
         "sprite-scaling": "*",
         "pxt-zoom": "github:kiwiphoenix364/pxt-zoom#v3.0.3",
         "small-tilemaps": "github:riknoll/small-tilemaps#v0.0.2",
-        "browser-events": "*"
+        "browser-events": "*",
+        "animation": "*",
+        "arcade-character-animations": "github:microsoft/arcade-character-animations#v0.0.2"
     },
     "files": [
         "main.blocks",
