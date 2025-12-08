@@ -156,9 +156,11 @@ function setWorld1 () {
             tiles.setCurrentTilemap(tilemap`level4World1`)
         } else if (Came == 1) {
             if (levelFinished == 0) {
-                tiles.setCurrentTilemap(tilemap`level12`)
+                if (Came_1 == 1) {
+                    tiles.setCurrentTilemap(tilemap`level12`)
+                }
             } else {
-                tiles.setCurrentTilemap(tilemap`level15`)
+                tiles.setCurrentTilemap(tilemap`level12`)
             }
             if (HasBlock == 0) {
                 tiles.setTileAt(Main_Location, sprites.dungeon.floorLight2)
@@ -173,16 +175,14 @@ function setWorld1 () {
     }
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (HasBlock == 1 && (tiles.tileAtLocationEquals(mainCharacter.tilemapLocation(), assets.tile`Button_Off`) || tiles.tileAtLocationEquals(mainCharacter.tilemapLocation(), assets.tile`transparency16`))) {
-        if (tiles.tileAtLocationEquals(mainCharacter.tilemapLocation(), assets.tile`Button_Off`)) {
-            Came = 1
-            tiles.setTileAt(tiles.getTileLocation(7, 11), assets.tile`transparency16`)
-            tiles.setWallAt(tiles.getTileLocation(7, 11), false)
-            tiles.setTileAt(tiles.getTileLocation(7, 10), assets.tile`transparency16`)
-            tiles.setWallAt(tiles.getTileLocation(7, 10), false)
-            music.play(music.melodyPlayable(music.baDing), music.PlaybackMode.InBackground)
-        }
+    if (HasBlock == 1 && (tiles.tileAtLocationEquals(mainCharacter.tilemapLocation(), assets.tile`Button_Off`) || tiles.tileAtLocationEquals(mainCharacter.tilemapLocation(), assets.tile`myTile28`))) {
+        Came = 1
+        tiles.setTileAt(tiles.getTileLocation(7, 11), assets.tile`transparency16`)
+        tiles.setWallAt(tiles.getTileLocation(7, 11), false)
+        tiles.setTileAt(tiles.getTileLocation(7, 10), assets.tile`transparency16`)
+        tiles.setWallAt(tiles.getTileLocation(7, 10), false)
         tiles.setTileAt(mainCharacter.tilemapLocation(), sprites.dungeon.floorLight2)
+        music.play(music.melodyPlayable(music.baDing), music.PlaybackMode.InBackground)
         Main_Location = mainCharacter.tilemapLocation()
         HasBlock = 0
         pause(1000)
@@ -290,7 +290,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile4`, function (sprite, l
     if (touchingSign == 0) {
         if (level == 1) {
             if (world == 1) {
-                game.splash("Press A facing the wall to create a time portal")
+                game.splash("Need a clue:", "Press A near a wall")
             } else {
                 game.splash("Collect the key to advance")
             }
@@ -370,6 +370,13 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Lever_Off0`, function (sprite
             tiles.setCurrentTilemap(tilemap`level18`)
             levelFinished = 1
         }
+    }
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`Button_Off`, function (sprite, location) {
+    if (sprite.tileKindAt(TileDirection.Bottom, assets.tile`Button_Off`)) {
+        tiles.setTileAt(location, assets.tile`myTile28`)
+    } else if (!(sprite.tileKindAt(TileDirection.Bottom, assets.tile`Button_Off`))) {
+        tiles.setTileAt(location, assets.tile`Button_Off`)
     }
 })
 controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -831,13 +838,10 @@ function setWorld2 () {
             tiles.setCurrentTilemap(tilemap`level4World2`)
             Collectable_On = 1
         } else if (Block_Collect == 1) {
-            if (Came == 0) {
-                tiles.setCurrentTilemap(tilemap`level20`)
-            } else if (Came == 1) {
+            if (Came == 1) {
                 if (levelFinished == 0) {
                     tiles.setCurrentTilemap(tilemap`level11`)
-                } else {
-                    tiles.setCurrentTilemap(tilemap`level18`)
+                    Came_1 = 1
                 }
             }
             if (HasBlock == 0) {
@@ -852,8 +856,9 @@ function setWorld2 () {
         game.gameOver(true)
     }
 }
-let Lava: Sprite = null
+let Lava2: Sprite = null
 let Ice_Potion: Sprite = null
+let Hero_On = 0
 let Block_Collect = 0
 let Gravity = 0
 let touchingGround = 0
@@ -869,6 +874,7 @@ let star: Sprite = null
 let keymoved = 0
 let Main_Location: tiles.Location = null
 let HasBlock = 0
+let Came_1 = 0
 let levelFinished = 0
 let Came = 0
 let Slime_On = 0
@@ -923,6 +929,18 @@ placeKeys()
 scene.cameraFollowSprite(mainCharacter)
 tiles.placeOnTile(mainCharacter, tiles.getTileLocation(2, 11))
 forever(function () {
+    if (level == 4 && world == 1) {
+        if (tiles.tileAtLocationEquals(tiles.getTileLocation(3, 11), assets.tile`Button_Off`) && (mainCharacter.tileKindAt(TileDirection.Center, assets.tile`Button_Off`) || (mainCharacter.tileKindAt(TileDirection.Bottom, assets.tile`Button_Off`) || (mainCharacter.tileKindAt(TileDirection.Right, assets.tile`Button_Off`) || mainCharacter.tileKindAt(TileDirection.Left, assets.tile`Button_Off`))))) {
+            tiles.setTileAt(tiles.getTileLocation(3, 11), assets.tile`myTile28`)
+            music.play(music.melodyPlayable(music.beamUp), music.PlaybackMode.UntilDone)
+            Hero_On = 1
+        } else if (tiles.tileAtLocationEquals(tiles.getTileLocation(3, 11), assets.tile`myTile28`) && !(mainCharacter.tileKindAt(TileDirection.Center, assets.tile`myTile28`) || (mainCharacter.tileKindAt(TileDirection.Bottom, assets.tile`myTile28`) || (mainCharacter.tileKindAt(TileDirection.Right, assets.tile`myTile28`) || mainCharacter.tileKindAt(TileDirection.Left, assets.tile`myTile28`))))) {
+            tiles.setTileAt(tiles.getTileLocation(3, 11), assets.tile`Button_Off`)
+            Hero_On = 0
+        }
+    }
+})
+forever(function () {
     for (let value of tiles.getTilesByType(assets.tile`myTile21`)) {
         Ice_Potion = sprites.create(img`
             . . . . . . . . . . . . . . . . 
@@ -952,6 +970,27 @@ forever(function () {
         Direction = 1
     } else if (controller.left.isPressed()) {
         Direction = 0
+    }
+})
+forever(function () {
+    if (level == 4 && world == 1) {
+        if (tiles.tileAtLocationEquals(tiles.getTileLocation(3, 11), assets.tile`myTile28`)) {
+            let Block_On = 0
+            if (Hero_On == 1) {
+                tiles.setWallAt(tiles.getTileLocation(7, 11), false)
+                tiles.setTileAt(tiles.getTileLocation(7, 11), assets.tile`NOTHING_Tile`)
+            } else if (Block_On == 1) {
+                tiles.setTileAt(tiles.getTileLocation(7, 10), assets.tile`NOTHING_Tile`)
+                tiles.setWallAt(tiles.getTileLocation(7, 10), false)
+                tiles.setWallAt(tiles.getTileLocation(7, 11), false)
+                tiles.setTileAt(tiles.getTileLocation(7, 11), assets.tile`NOTHING_Tile`)
+            }
+        } else if (tiles.tileAtLocationEquals(tiles.getTileLocation(3, 11), assets.tile`Button_Off`)) {
+            tiles.setTileAt(tiles.getTileLocation(7, 10), sprites.dungeon.floorLight0)
+            tiles.setTileAt(tiles.getTileLocation(7, 11), sprites.dungeon.floorLight0)
+            tiles.setWallAt(tiles.getTileLocation(7, 11), true)
+            tiles.setWallAt(tiles.getTileLocation(7, 10), true)
+        }
     }
 })
 forever(function () {
@@ -991,7 +1030,7 @@ forever(function () {
 })
 forever(function () {
     if (world == 2 && level == 5) {
-        Lava = sprites.create(img`
+        Lava2 = sprites.create(img`
             ................................................................................
             ................................................................................
             ................................................................................
@@ -1009,7 +1048,7 @@ forever(function () {
             ................................................................................
             ................................................................................
             `, SpriteKind.Lava)
-        Lava.setImage(img`
+        Lava2.setImage(img`
             ................................................................................
             ................................................................................
             ................................................................................
@@ -1027,6 +1066,6 @@ forever(function () {
             ................................................................................
             ................................................................................
             `)
-        tiles.placeOnTile(Lava, tiles.getTileLocation(9, 12))
+        tiles.placeOnTile(Lava2, tiles.getTileLocation(9, 12))
     }
 })
