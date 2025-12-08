@@ -171,6 +171,9 @@ function setWorld1 () {
             star.y += -48
         }
     } else {
+        music.play(music.melodyPlayable(music.powerUp), music.PlaybackMode.UntilDone)
+        game.showLongText("Well done. Pls sub to my channel, Cat_Food_Culture. Made by Harris L, Subhash P and Tim B!!!", DialogLayout.Full)
+        game.setGameOverEffect(true, effects.starField)
         game.gameOver(true)
     }
 }
