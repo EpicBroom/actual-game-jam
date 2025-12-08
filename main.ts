@@ -888,6 +888,7 @@ let First_Time = 0
 let world = 0
 let mainCharacter: Sprite = null
 let PortalBoundary: Sprite = null
+game.splash("Welcome to Tim B and Subhash P’s game jam submission - portal mayhem!")
 let Ice_Projectile = 0
 setVaribles()
 PortalBoundary = sprites.create(img`
